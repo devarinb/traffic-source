@@ -33,11 +33,13 @@ function getTrackingRef() {
 </script>`;
 
   const webhookUrl = `${appUrl}/api/stripe/webhook/${site.id}`;
+  const webhookEvents = ['checkout.session.completed', 'payment_intent.succeeded', 'charge.refunded'];
 
   res.status(200).json({
     site,
     trackingSnippet,
     stripeSnippet,
     webhookUrl,
+    webhookEvents,
   });
 });

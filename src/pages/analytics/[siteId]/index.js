@@ -4,7 +4,9 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import MetricStrip from '@/components/ui/MetricStrip';
 import AnalyticsPanel from '@/components/ui/AnalyticsPanel';
 import CombinedChart from '@/components/charts/CombinedChart';
+import RealtimeUsers from '@/components/ui/RealtimeUsers';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { formatCountryLabel, getBrowserIcon, getOsIcon, getDeviceIcon, buildPageHref } from '@/lib/formatters';
 
 export default function Analytics() {
   const router = useRouter();
@@ -33,6 +35,9 @@ export default function Analytics() {
         <title>{data.site?.name || 'Analytics'} - Traffic Source</title>
       </Head>
       <DashboardLayout siteId={siteId} siteName={data.site?.name}>
+
+        {/* ── Realtime Active Users ── */}
+        <RealtimeUsers />
 
         {/* ── Metrics Strip ── */}
         <MetricStrip metrics={[
@@ -136,6 +141,12 @@ export default function Analytics() {
               <div className="panel-tabs">
                 <button className="panel-tab active">Journey for payment</button>
               </div>
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={() => router.push(`/analytics/${siteId}/conversions`)}
+              >
+                View all &rarr;
+              </button>
             </div>
             <div className="panel-body" style={{ padding: 0 }}>
               <table className="journey-table">
@@ -167,76 +178,13 @@ export default function Analytics() {
   );
 }
 
-function formatCountryLabel(codeOrName) {
-  if (!codeOrName) return 'Unknown';
-  const value = String(codeOrName).trim();
-  if (!/^[a-z]{2}$/i.test(value)) return value;
-  const upper = value.toUpperCase();
-  let countryName = upper;
-  try {
-    countryName = new Intl.DisplayNames(['en'], { type: 'region' }).of(upper) || upper;
-  } catch {
-    countryName = upper;
-  }
-  return `${countryCodeToFlag(upper)} ${countryName}`;
-}
-
-function countryCodeToFlag(countryCode) {
-  if (!/^[A-Z]{2}$/.test(countryCode)) return '';
-  const [first, second] = countryCode;
-  const base = 127397;
-  return String.fromCodePoint(first.charCodeAt(0) + base, second.charCodeAt(0) + base);
-}
-
 function renderPageLabel(pathname, siteDomain) {
   const href = buildPageHref(pathname, siteDomain);
   if (!href) return pathname || '/';
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="page-link-out">
       <span>{pathname || '/'}</span>
-      <span aria-hidden="true">↗</span>
+      <span aria-hidden="true">&uarr;</span>
     </a>
   );
-}
-
-function buildPageHref(pathname, siteDomain) {
-  if (!pathname) return '';
-  if (/^https?:\/\//i.test(pathname)) return pathname;
-  const domain = normalizeDomain(siteDomain);
-  if (!domain) return '';
-  const safePath = pathname.startsWith('/') ? pathname : `/${pathname}`;
-  return `${domain}${safePath}`;
-}
-
-function normalizeDomain(domain) {
-  if (!domain) return '';
-  if (/^https?:\/\//i.test(domain)) return domain.replace(/\/$/, '');
-  return `https://${domain.replace(/\/$/, '')}`;
-}
-
-function getBrowserIcon(name = '') {
-  const value = name.toLowerCase();
-  if (value.includes('chrome')) return '🌐';
-  if (value.includes('safari')) return '🧭';
-  if (value.includes('firefox')) return '🦊';
-  if (value.includes('edge')) return '🟦';
-  if (value.includes('opera')) return '⭕';
-  return '🌍';
-}
-
-function getOsIcon(name = '') {
-  const value = name.toLowerCase();
-  if (value.includes('windows')) return '🪟';
-  if (value.includes('mac') || value.includes('ios')) return '🍎';
-  if (value.includes('android')) return '🤖';
-  if (value.includes('linux')) return '🐧';
-  return '💻';
-}
-
-function getDeviceIcon(name = '') {
-  const value = name.toLowerCase();
-  if (value.includes('mobile') || value.includes('phone')) return '📱';
-  if (value.includes('tablet') || value.includes('ipad')) return '📲';
-  if (value.includes('desktop') || value.includes('laptop')) return '🖥️';
-  return '📟';
 }

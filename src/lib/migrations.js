@@ -125,6 +125,12 @@ const migrations = [
       ALTER TABLE sites ADD COLUMN stripe_webhook_secret TEXT;
     `);
   },
+  // Migration 3: Index for realtime active users query
+  (db) => {
+    db.exec(`
+      CREATE INDEX IF NOT EXISTS idx_sessions_site_last_activity ON sessions(site_id, last_activity);
+    `);
+  },
 ];
 
 export function runMigrations(db) {

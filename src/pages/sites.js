@@ -284,6 +284,14 @@ export default function Sites() {
                   </button>
                   {snippetData.webhookUrl}
                 </div>
+                <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>
+                  Add this URL in your Stripe Dashboard under Developers &gt; Webhooks. Listen for these events:
+                </p>
+                <ul style={{ fontSize: 12, color: 'var(--text-muted)', margin: '4px 0 0 16px', padding: 0 }}>
+                  {snippetData.webhookEvents?.map((evt) => (
+                    <li key={evt}><code>{evt}</code></li>
+                  ))}
+                </ul>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-secondary" onClick={() => setShowSnippet(null)}>
