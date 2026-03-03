@@ -74,9 +74,15 @@ export default function Sites() {
           </div>
         ) : (
           <div className="sites-list">
-            {sites.map((site) => {
-              const totalPageviews = site.hourly.reduce((sum, h) => sum + h.pageviews, 0);
-              const totalVisitors = site.hourly.reduce((sum, h) => sum + h.visitors, 0);
+            {[...sites]
+              .map((site) => ({
+                ...site,
+                totalPageviews: site.hourly.reduce((sum, h) => sum + h.pageviews, 0),
+                totalVisitors: site.hourly.reduce((sum, h) => sum + h.visitors, 0),
+              }))
+              .sort((a, b) => b.totalPageviews - a.totalPageviews)
+              .map((site) => {
+              const { totalPageviews, totalVisitors } = site;
               const maxVal = Math.max(...site.hourly.map((h) => h.pageviews), 1);
               return (
                 <div
