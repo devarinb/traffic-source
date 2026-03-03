@@ -7,8 +7,11 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { useChartTheme } from '@/hooks/useChartTheme';
 
 export default function BarBreakdownChart({ data, dataKey = 'count', color = '#3b82f6' }) {
+  const ct = useChartTheme();
+
   if (!data || data.length === 0) {
     return (
       <div className="empty-state">
@@ -25,20 +28,22 @@ export default function BarBreakdownChart({ data, dataKey = 'count', color = '#3
           layout="vertical"
           margin={{ top: 5, right: 20, left: 80, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" horizontal={false} />
-          <XAxis type="number" tick={{ fontSize: 11, fill: '#6b7280' }} />
+          <CartesianGrid strokeDasharray="3 3" stroke={ct.grid} horizontal={false} />
+          <XAxis type="number" tick={{ fontSize: 11, fill: ct.axis }} />
           <YAxis
             type="category"
             dataKey="name"
-            tick={{ fontSize: 11, fill: '#6b7280' }}
+            tick={{ fontSize: 11, fill: ct.axis }}
             width={70}
           />
           <Tooltip
             contentStyle={{
-              background: '#fff',
-              border: '1px solid #e5e7eb',
+              background: ct.tooltipBg,
+              border: `1px solid ${ct.tooltipBorder}`,
               borderRadius: 8,
               fontSize: 13,
+              color: ct.tooltipText,
+              boxShadow: ct.tooltipShadow,
             }}
           />
           <Bar dataKey={dataKey} fill={color} radius={[0, 4, 4, 0]} />

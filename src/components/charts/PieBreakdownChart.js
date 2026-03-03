@@ -1,8 +1,11 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useChartTheme } from '@/hooks/useChartTheme';
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'];
 
 export default function PieBreakdownChart({ data, dataKey = 'count' }) {
+  const ct = useChartTheme();
+
   if (!data || data.length === 0) {
     return (
       <div className="empty-state">
@@ -31,16 +34,18 @@ export default function PieBreakdownChart({ data, dataKey = 'count' }) {
           </Pie>
           <Tooltip
             contentStyle={{
-              background: '#fff',
-              border: '1px solid #e5e7eb',
+              background: ct.tooltipBg,
+              border: `1px solid ${ct.tooltipBorder}`,
               borderRadius: 8,
               fontSize: 13,
+              color: ct.tooltipText,
+              boxShadow: ct.tooltipShadow,
             }}
           />
           <Legend
             wrapperStyle={{ fontSize: 12 }}
             formatter={(value) => (
-              <span style={{ color: '#374151' }}>{value}</span>
+              <span style={{ color: ct.tooltipText }}>{value}</span>
             )}
           />
         </PieChart>
