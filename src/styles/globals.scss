@@ -65,8 +65,8 @@
   --chart-tooltip-text: #f4f4f5;
   --chart-tooltip-label: #8b8b96;
   --chart-tooltip-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
-  --chart-bar-primary: #f4f4f5;
-  --chart-bar-secondary: rgba(255, 255, 255, 0.5);
+  --chart-bar-primary: #f97316;
+  --chart-bar-secondary: rgba(249, 115, 22, 0.4);
   --chart-bar-revenue: #22c55e;
 
   // Code block
@@ -156,8 +156,8 @@
   --chart-tooltip-text: #111827;
   --chart-tooltip-label: #6b7280;
   --chart-tooltip-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  --chart-bar-primary: #111827;
-  --chart-bar-secondary: rgba(0, 0, 0, 0.35);
+  --chart-bar-primary: #f97316;
+  --chart-bar-secondary: rgba(249, 115, 22, 0.4);
   --chart-bar-revenue: #16a34a;
 
   // Code block
@@ -1006,7 +1006,16 @@ a { color: var(--text); text-decoration: none; &:hover { color: var(--text-secon
   text-overflow: ellipsis;
   white-space: nowrap;
   flex: 1;
+}
+
+.realtime-widget-source,
+.realtime-widget-browser {
+  color: var(--text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
   text-align: right;
+  min-width: 60px;
 }
 
 .realtime-widget-more {

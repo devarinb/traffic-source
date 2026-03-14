@@ -54,6 +54,8 @@ export default function RealtimeUsers() {
                 {user.country ? getCountryName(user.country) : 'Unknown'}
               </span>
               <span className="realtime-widget-page">{user.current_page || '/'}</span>
+              <span className="realtime-widget-source">{user.source || 'Direct'}</span>
+              <span className="realtime-widget-browser">{user.browser || 'Unknown'}</span>
             </div>
           ))}
           {data.users.length > 10 && (

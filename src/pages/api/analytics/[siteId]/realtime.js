@@ -17,7 +17,8 @@ export default withAuth(function handler(req, res) {
   const activeUsers = db
     .prepare(
       `SELECT s.visitor_id, s.country, s.browser, s.device_type,
-              s.exit_page as current_page, s.last_activity
+              s.exit_page as current_page, s.last_activity,
+              COALESCE(s.utm_source, s.referrer_domain, 'Direct') as source
        FROM sessions s
        INNER JOIN (
          SELECT visitor_id, MAX(last_activity) as max_activity
